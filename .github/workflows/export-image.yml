@@ -1,0 +1,27 @@
+name: Export Docker Image
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  export-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Build Docker image
+      run: |
+        docker build -t travel-assistant .
+        docker save travel-assistant | gzip > travel-assistant.tar.gz
+
+    - name: Upload Docker image to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./travel-assistant.tar.gz
+        asset_name: travel-assistant.tar.gz
+        asset_content_type: application/gzip

@@ -107,29 +107,6 @@ router.post('/generate', authenticateToken, validateTravelPlan, async (req, res)
     
     let travelPlan = JSON.parse(jsonString);
 
-    // Enrich with map data
-    if (travelPlan.travel_plan && travelPlan.travel_plan.itinerary) {
-      for (const dayKey in travelPlan.travel_plan.itinerary) {
-        const day = travelPlan.travel_plan.itinerary[dayKey];
-        const timeSlots = ['morning', 'lunch', 'afternoon', 'evening'];
-
-        for (const slot of timeSlots) {
-          if (day[slot] && day[slot].location) {
-            const locationDetails = await getLocationDetails(day[slot].location);
-            if (locationDetails) {
-              day[slot].locationDetails = {
-                name: locationDetails.name,
-                address: locationDetails.address,
-                coordinates: locationDetails.location,
-                rating: locationDetails.biz_ext ? locationDetails.biz_ext.rating : 'N/A',
-                photos: locationDetails.photos && locationDetails.photos.length > 0 ? locationDetails.photos.map(p => p.url) : []
-              };
-            }
-          }
-        }
-      }
-    }
-
     res.json(travelPlan);
   } catch (error) {
     console.error('Travel plan generation error:', error);

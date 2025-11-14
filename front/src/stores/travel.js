@@ -67,6 +67,26 @@ export const useTravelStore = defineStore('travel', () => {
     }
   }
 
+  const loadPlanById = async (id) => {
+    try {
+      const response = await fetch(`/api/travel/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        currentPlan.value = data; // Correctly assign the whole plan object
+        return { success: true };
+      } else {
+        return { success: false, message: '加载计划详情失败' };
+      }
+    } catch (error) {
+      console.error('加载计划详情失败:', error);
+      return { success: false, message: '网络错误' };
+    }
+  };
+
   const clearCurrentPlan = () => {
     currentPlan.value = null
   }
@@ -78,6 +98,7 @@ export const useTravelStore = defineStore('travel', () => {
     generateTravelPlan,
     savePlan,
     loadHistory,
-    clearCurrentPlan
+    clearCurrentPlan,
+    loadPlanById
   }
 })

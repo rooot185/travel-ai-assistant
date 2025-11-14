@@ -85,12 +85,17 @@ const handlePlanGenerated = (plan) => {
   message.success('旅行计划生成成功！')
 }
 
-const viewPlan = (plan) => {
-  travelStore.currentPlan = plan
-  router.push('/travel-plan')
+const viewPlan = async (plan) => {
+  const result = await travelStore.loadPlanById(plan.id);
+  if (result.success) {
+    router.push('/travel-plan');
+  } else {
+    message.error(result.message || '加载计划详情失败');
+  }
 }
 
 onMounted(async () => {
+  travelStore.clearCurrentPlan() // 清除旧计划
   loadingHistory.value = true
   await travelStore.loadHistory()
   loadingHistory.value = false

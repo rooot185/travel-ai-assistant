@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="travel-map">
     <div ref="mapContainer" class="map-container">
       <div v-if="!isMapLoaded" class="map-loading">
@@ -30,6 +30,8 @@
 <script setup>
 import { ref, onMounted, watch, onUnmounted } from 'vue'
 
+console.log('[TravelMap] Component script setup started.');
+
 const props = defineProps({
   plan: {
     type: Object,
@@ -37,10 +39,14 @@ const props = defineProps({
   }
 })
 
+console.log('[TravelMap] Initial props.plan:', JSON.parse(JSON.stringify(props.plan)));
+
 const mapContainer = ref(null)
 const map = ref(null)
 const isMapLoaded = ref(false)
 const markers = ref([])
+let geocoder = null
+const amapLoaded = ref(false) // 新增：标记AMap及插件是否加载完成
 
 onMounted(() => {
   initializeMap()
@@ -54,30 +60,43 @@ onUnmounted(() => {
 })
 
 watch(() => props.plan, async (newPlan) => {
-  if (newPlan && Object.keys(newPlan).length > 0) {
+  console.log('[TravelMap] Watcher triggered with new plan:', JSON.parse(JSON.stringify(newPlan)));
+  if (newPlan && Object.keys(newPlan).length > 0 && isMapLoaded.value&& amapLoaded.value) {
     await updateMapWithPlan(newPlan)
   }
 }, { deep: true })
 
 const initializeMap = () => {
-  // 动态加载高德地图API
   if (!window.AMap) {
     const script = document.createElement('script')
     script.src = `https://webapi.amap.com/maps?v=2.0&key=${import.meta.env.VITE_AMAP_API_KEY || '8a5e31d8e8c356f706fb6b3bc250fc06'}`
+    // script.src = `https://webapi.amap.com/maps?v=2.0&key='c97b450da8f4dcd61d24c1ceeeb3adfc'}`
     script.onload = () => {
-      createMapInstance()
+      if (window.AMap) {
+        loadAMapPlugins() // 加载插件
+      }    
     }
     document.head.appendChild(script)
   } else {
-    createMapInstance()
+    loadAMapPlugins()
   }
 }
 
-const createMapInstance = () => {
-  if (!mapContainer.value) return
+const loadAMapPlugins = () => {
+  AMap.plugin(['AMap.Scale', 'AMap.ToolBar', 'AMap.Geocoder'], () => {
+    amapLoaded.value = true // 关键：标记AMap及插件已加载完成！
+    createMapInstance()
+    // Manually trigger update for the initial plan after map is ready
+    if (props.plan && Object.keys(props.plan).length > 0) {
+      updateMapWithPlan(props.plan);
+    }
+  })
+}
 
+const createMapInstance = () => {
+  
+  if (!mapContainer.value|| !window.AMap) return
   try {
-    // 创建地图实例
     map.value = new AMap.Map(mapContainer.value, {
       zoom: 12,
       center: [116.397428, 39.90923], // 默认北京中心
@@ -91,61 +110,95 @@ const createMapInstance = () => {
     map.value.addControl(new AMap.Scale())
     map.value.addControl(new AMap.ToolBar())
 
+    // 初始化地理编码器
+    geocoder = new AMap.Geocoder({
+      city: '全国', // 默认全国，可根据实际需求调整
+      radius: 1000, // 范围，默认1000
+      batch:false
+    })
+
   } catch (error) {
     console.error('地图初始化失败:', error)
   }
 }
 
 const updateMapWithPlan = async (plan) => {
-  if (!map.value || !plan.travel_plan) return
-
+  if (!amapLoaded.value ||!map.value || !plan.itinerary || !geocoder){
+    console.log("amapLoaded"+amapLoaded.value)
+    return
+  }
   // 清除现有标记
   clearMarkers()
 
-  const locations = []
+  const locationsToProcess = []
 
   // 提取所有地点信息
-  if (plan.travel_plan.itinerary) {
-    for (const dayKey in plan.travel_plan.itinerary) {
-      const day = plan.travel_plan.itinerary[dayKey]
+  if (plan.itinerary) {
+    for (const dayKey in plan.itinerary) {
+      const day = plan.itinerary[dayKey]
       const timeSlots = ['morning', 'lunch', 'afternoon', 'evening']
 
       for (const slot of timeSlots) {
-        if (day[slot] && day[slot].locationDetails) {
-          const location = day[slot].locationDetails
-          if (location.coordinates) {
-            locations.push({
-              ...location,
-              type: getLocationType(day[slot].activity),
-              timeSlot: slot,
-              day: dayKey
-            })
-          }
+        if (day[slot] && day[slot].location) { // Use location directly
+          locationsToProcess.push({
+            name: day[slot].activity,
+            address: day[slot].location, // Use location as address
+            type: getLocationType(day[slot].activity),
+            timeSlot: slot,
+            day: dayKey,
+            description: day[slot].description
+          })
         }
       }
     }
   }
 
   // 添加住宿建议
-  if (plan.travel_plan.accommodation_suggestion &&
-      plan.travel_plan.accommodation_suggestion.location) {
-    const accLocation = await getLocationCoordinates(plan.travel_plan.accommodation_suggestion.location)
-    if (accLocation) {
-      locations.push({
-        ...accLocation,
-        name: plan.travel_plan.accommodation_suggestion.type || '住宿',
-        type: 'hotel',
-        description: plan.travel_plan.accommodation_suggestion.recommendation
+  if (plan.accommodation_suggestion &&
+      plan.accommodation_suggestion.location) {
+    locationsToProcess.push({
+      name: plan.accommodation_suggestion.type || '住宿',
+      address: plan.accommodation_suggestion.location,
+      type: 'hotel',
+      description: plan.accommodation_suggestion.recommendation
+    })
+  }
+
+  const resolvedLocations = []
+  for (const loc of locationsToProcess) {
+    
+
+    const coordinates = await geocodeAddress(loc.address)
+    alert(coordinates)
+    console.log('[TravelMap] Resolved location:', loc.name, loc.address, coordinates);
+    if (coordinates) {
+      resolvedLocations.push({
+        ...loc,
+        coordinates: coordinates.join(',') // Store as "lng,lat" string
       })
+    } else {
+      console.warn(`无法获取地址坐标: ${loc.address}`)
     }
   }
 
+  // 如果没有有效的地点，添加一个默认地点（天安门）
+  if (resolvedLocations.length === 0) {
+    console.warn('未找到有效地点，使用默认地点：北京天安门');
+    resolvedLocations.push({
+      name: '北京天安门',
+      address: '北京市东城区天安门广场',
+      coordinates: '116.397428,39.90923',
+      type: 'attraction',
+      description: '中国的心脏，世界上最大的城市中心广场'
+    });
+  }
+
   // 在地图上添加标记
-  addMarkersToMap(locations)
+  addMarkersToMap(resolvedLocations)
 
   // 调整地图视图以包含所有标记
-  if (locations.length > 0) {
-    adjustMapView(locations)
+  if (resolvedLocations.length > 0) {
+    adjustMapView(resolvedLocations)
   }
 }
 
@@ -156,25 +209,44 @@ const getLocationType = (activity) => {
   return 'attraction'
 }
 
-const getLocationCoordinates = async (locationName) => {
-  try {
-    // 这里可以调用后端的坐标获取接口
-    const response = await fetch(`/api/map/geocode?address=${encodeURIComponent(locationName)}`)
-    if (response.ok) {
-      const data = await response.json()
-      return data
+const geocodeAddress = (address) => {
+console.log('[GEOCODE] Geocoding address:', address);
+  return new Promise((resolve) => {
+    if (!geocoder) {
+      console.error('无法使用地理编码器：未初始化')
+      resolve(null)
+      return
     }
-  } catch (error) {
-    console.error('获取坐标失败:', error)
-  }
-  return null
+    geocoder.getLocation(address, (status, result) => {
+      console.log(`[GEOCODE] Address: "${address}" | Status: ${status}`, result); // Log raw result
+      if (status === 'complete' && result.info === 'OK' && result.geocodes.length > 0) {
+        const { lng, lat } = result.geocodes[0].location
+        console.log(`[GEOCODE] Success for "${address}":`, [lng, lat]); // Log successful coords
+        resolve([lng, lat])
+      } else {
+        console.error('地理编码失败:', address, status, result)
+        resolve(null)
+      }
+    })
+  })
 }
 
 const addMarkersToMap = (locations) => {
   if (!map.value) return
+  console.log('[MARKERS] Locations to add:', locations); // Log all locations before processing
 
   locations.forEach(location => {
-    const [lng, lat] = location.coordinates.split(',').map(coord => parseFloat(coord.trim()))
+    if (!location.coordinates) return
+
+    console.log(`[MARKERS] Processing location: "${location.name}" with coords string: "${location.coordinates}"`);
+    const coords = location.coordinates.split(',').map(coord => parseFloat(coord.trim()))
+    const [lng, lat] = coords
+    console.log(`[MARKERS] Parsed coords for "${location.name}":`, { lng, lat }); // Log parsed coords
+
+    if (!isFinite(lng) || !isFinite(lat)) {
+      console.error('Invalid coordinates for location:', location)
+      return // Skip this invalid location
+    }
 
     const marker = new AMap.Marker({
       position: [lng, lat],
@@ -226,7 +298,15 @@ const adjustMapView = (locations) => {
   const bounds = new AMap.Bounds()
 
   locations.forEach(location => {
-    const [lng, lat] = location.coordinates.split(',').map(coord => parseFloat(coord.trim()))
+    if (!location.coordinates) return
+
+    const coords = location.coordinates.split(',').map(coord => parseFloat(coord.trim()))
+    const [lng, lat] = coords
+
+    if (!isFinite(lng) || !isFinite(lat)) {
+      console.error('Invalid coordinates for map bounds:', location)
+      return // Skip this invalid location
+    }
     bounds.extend([lng, lat])
   })
 
@@ -357,5 +437,49 @@ const clearMarkers = () => {
   color: #666;
   font-size: 12px;
   line-height: 1.4;
+}
+</style> -->
+
+<script setup>
+import { onMounted, onUnmounted } from "vue";
+import AMapLoader from "@amap/amap-jsapi-loader";
+
+let map = null;
+
+onMounted(() => {
+  window._AMapSecurityConfig = {
+    securityJsCode: "591d86dc6c0a449356ba2d8667f10ce2",
+  };
+  AMapLoader.load({
+    key: "c97b450da8f4dcd61d24c1ceeeb3adfc", // 申请好的Web端开发者Key，首次调用 load 时必填
+    version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+    plugins: ["AMap.Scale"], //需要使用的的插件列表，如比例尺'AMap.Scale'，支持添加多个如：['...','...']
+  })
+    .then((AMap) => {
+      map = new AMap.Map("container", {
+        // 设置地图容器id
+        viewMode: "3D", // 是否为3D地图模式
+        zoom: 11, // 初始化地图级别
+        center: [116.397428, 39.90923], // 初始化地图中心点位置
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+});
+
+onUnmounted(() => {
+  map?.destroy();
+});
+</script>
+
+<template>
+  <div id="container"></div>
+</template>
+
+<style scoped>
+#container {
+  width: 100%;
+  height: 800px;
 }
 </style>

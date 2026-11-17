@@ -1,0 +1,36 @@
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+  forward-headers-strategy: native
+  error:
+    include-message: never
+    whitelabel:
+      enabled: false
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/travel}
+    username: ${DATABASE_USER:travel}
+    password: ${DATABASE_PASSWORD:}
+    hikari:
+      maximum-pool-size: 10
+  mvc:
+    problemdetails:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+travel:
+  secure-cookie: ${COOKIE_SECURE:true}
+  allow-registration: ${ALLOW_REGISTRATION:true}
+  ai-enabled: ${AI_ENABLED:false}
+  model-url: ${MODEL_URL:https://api.deepseek.com/chat/completions}
+  model-name: ${MODEL_NAME:deepseek-v4-flash}
+  model-key: ${MODEL_API_KEY:}
+  amap-key: ${AMAP_WEB_KEY:}

@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: travel
+      POSTGRES_USER: travel
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
+    volumes:
+      - travel-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U travel -d travel"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  api:
+    build:
+      context: backend
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/travel
+      DATABASE_USER: travel
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
+      ALLOW_REGISTRATION: ${ALLOW_REGISTRATION:-true}
+      AI_ENABLED: ${AI_ENABLED:-false}
+      MODEL_URL: ${MODEL_URL:-https://api.deepseek.com/chat/completions}
+      MODEL_NAME: ${MODEL_NAME:-deepseek-v4-flash}
+      MODEL_API_KEY: ${MODEL_API_KEY:-}
+      AMAP_WEB_KEY: ${AMAP_WEB_KEY:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    tmpfs: ["/tmp"]
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/8080; printf \"GET /actuator/health HTTP/1.0\\r\\n\\r\\n\" >&3; read -r line <&3; [[ \"$$line\" == *\" 200 \"* ]]'"]
+      interval: 10s
+      timeout: 4s
+      retries: 10
+    restart: unless-stopped
+
+  web:
+    build:
+      context: web
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8088}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  travel-data:

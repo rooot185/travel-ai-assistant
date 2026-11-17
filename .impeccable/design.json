@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T03:12:14Z",
+  "title": "Design System: 路书",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "象牙纸",
+        "tonalRamp": [
+          "oklch(15% 0.0027 93.6)",
+          "oklch(26% 0.0059 93.6)",
+          "oklch(38% 0.0082 93.6)",
+          "oklch(50% 0.0095 93.6)",
+          "oklch(62% 0.0089 93.6)",
+          "oklch(74% 0.0074 93.6)",
+          "oklch(86% 0.0054 93.6)",
+          "oklch(95% 0.0034 93.6)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "册页白",
+        "tonalRamp": [
+          "oklch(15% 0.0019 97.3)",
+          "oklch(26% 0.0041 97.3)",
+          "oklch(38% 0.0057 97.3)",
+          "oklch(50% 0.0067 97.3)",
+          "oklch(62% 0.0063 97.3)",
+          "oklch(74% 0.0052 97.3)",
+          "oklch(86% 0.0038 97.3)",
+          "oklch(95% 0.0024 97.3)"
+        ]
+      },
+      "control-paper": {
+        "role": "neutral",
+        "displayName": "输入纸面",
+        "tonalRamp": [
+          "oklch(15% 0.0015 95.1)",
+          "oklch(26% 0.0033 95.1)",
+          "oklch(38% 0.0046 95.1)",
+          "oklch(50% 0.0054 95.1)",
+          "oklch(62% 0.0050 95.1)",
+          "oklch(74% 0.0042 95.1)",
+          "oklch(86% 0.0031 95.1)",
+          "oklch(95% 0.0019 95.1)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "深墨",
+        "tonalRamp": [
+          "oklch(15% 0.0064 162.8)",
+          "oklch(26% 0.0142 162.8)",
+          "oklch(38% 0.0197 162.8)",
+          "oklch(50% 0.0229 162.8)",
+          "oklch(62% 0.0215 162.8)",
+          "oklch(74% 0.0178 162.8)",
+          "oklch(86% 0.0130 162.8)",
+          "oklch(95% 0.0082 162.8)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "浅墨",
+        "tonalRamp": [
+          "oklch(15% 0.0059 160.5)",
+          "oklch(26% 0.0132 160.5)",
+          "oklch(38% 0.0183 160.5)",
+          "oklch(50% 0.0212 160.5)",
+          "oklch(62% 0.0200 160.5)",
+          "oklch(74% 0.0166 160.5)",
+          "oklch(86% 0.0121 160.5)",
+          "oklch(95% 0.0076 160.5)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "纸面细线",
+        "tonalRamp": [
+          "oklch(15% 0.0048 125.3)",
+          "oklch(26% 0.0106 125.3)",
+          "oklch(38% 0.0146 125.3)",
+          "oklch(50% 0.0170 125.3)",
+          "oklch(62% 0.0160 125.3)",
+          "oklch(74% 0.0133 125.3)",
+          "oklch(86% 0.0097 125.3)",
+          "oklch(95% 0.0061 125.3)"
+        ]
+      },
+      "input-rule": {
+        "role": "neutral",
+        "displayName": "输入框边线",
+        "tonalRamp": [
+          "oklch(15% 0.0065 145.3)",
+          "oklch(26% 0.0144 145.3)",
+          "oklch(38% 0.0200 145.3)",
+          "oklch(50% 0.0233 145.3)",
+          "oklch(62% 0.0219 145.3)",
+          "oklch(74% 0.0181 145.3)",
+          "oklch(86% 0.0133 145.3)",
+          "oklch(95% 0.0084 145.3)"
+        ]
+      },
+      "forest": {
+        "role": "primary",
+        "displayName": "墨绿",
+        "tonalRamp": [
+          "oklch(15% 0.0130 172.9)",
+          "oklch(26% 0.0287 172.9)",
+          "oklch(38% 0.0398 172.9)",
+          "oklch(50% 0.0463 172.9)",
+          "oklch(62% 0.0435 172.9)",
+          "oklch(74% 0.0361 172.9)",
+          "oklch(86% 0.0264 172.9)",
+          "oklch(95% 0.0167 172.9)"
+        ]
+      },
+      "action": {
+        "role": "primary",
+        "displayName": "松绿",
+        "tonalRamp": [
+          "oklch(15% 0.0214 171.0)",
+          "oklch(26% 0.0475 171.0)",
+          "oklch(38% 0.0658 171.0)",
+          "oklch(50% 0.0766 171.0)",
+          "oklch(62% 0.0720 171.0)",
+          "oklch(74% 0.0597 171.0)",
+          "oklch(86% 0.0436 171.0)",
+          "oklch(95% 0.0276 171.0)"
+        ]
+      },
+      "action-hover": {
+        "role": "primary",
+        "displayName": "深松绿",
+        "tonalRamp": [
+          "oklch(15% 0.0183 170.2)",
+          "oklch(26% 0.0404 170.2)",
+          "oklch(38% 0.0561 170.2)",
+          "oklch(50% 0.0652 170.2)",
+          "oklch(62% 0.0613 170.2)",
+          "oklch(74% 0.0509 170.2)",
+          "oklch(86% 0.0372 170.2)",
+          "oklch(95% 0.0235 170.2)"
+        ]
+      },
+      "tint": {
+        "role": "primary",
+        "displayName": "浅青绿",
+        "tonalRamp": [
+          "oklch(15% 0.0039 138.7)",
+          "oklch(26% 0.0087 138.7)",
+          "oklch(38% 0.0121 138.7)",
+          "oklch(50% 0.0140 138.7)",
+          "oklch(62% 0.0132 138.7)",
+          "oklch(74% 0.0110 138.7)",
+          "oklch(86% 0.0080 138.7)",
+          "oklch(95% 0.0051 138.7)"
+        ]
+      },
+      "seal": {
+        "role": "secondary",
+        "displayName": "印泥朱",
+        "tonalRamp": [
+          "oklch(15% 0.0317 39.8)",
+          "oklch(26% 0.0702 39.8)",
+          "oklch(38% 0.0973 39.8)",
+          "oklch(50% 0.1132 39.8)",
+          "oklch(62% 0.1064 39.8)",
+          "oklch(74% 0.0883 39.8)",
+          "oklch(86% 0.0645 39.8)",
+          "oklch(95% 0.0407 39.8)"
+        ]
+      },
+      "error": {
+        "role": "secondary",
+        "displayName": "错误红",
+        "tonalRamp": [
+          "oklch(15% 0.0359 28.8)",
+          "oklch(26% 0.0795 28.8)",
+          "oklch(38% 0.1102 28.8)",
+          "oklch(50% 0.1282 28.8)",
+          "oklch(62% 0.1205 28.8)",
+          "oklch(74% 0.1000 28.8)",
+          "oklch(86% 0.0731 28.8)",
+          "oklch(95% 0.0461 28.8)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "册页标题",
+        "purpose": "封面标题和路书字标。"
+      },
+      "title": {
+        "displayName": "纸页标题",
+        "purpose": "工作台面板的名称。"
+      },
+      "body": {
+        "displayName": "中文正文",
+        "purpose": "日程说明、普通正文与操作。"
+      },
+      "label": {
+        "displayName": "控件标签",
+        "purpose": "表单字段标题。"
+      }
+    },
+    "shadows": [
+      {
+        "name": "dialog",
+        "value": "0 18px 48px rgb(16 45 37 / 22%)",
+        "purpose": "区分登录对话框与工作台。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "loading-pulse",
+        "value": "pulse 1.8s ease-in-out infinite alternate",
+        "purpose": "用于运行状态和加载图形。减少动态效果时动画时长为 .01ms。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-workbench",
+        "value": "1120px"
+      },
+      {
+        "name": "single-column",
+        "value": "730px"
+      },
+      {
+        "name": "narrow-mobile",
+        "value": "370px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "主按钮",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "生成行程",
+      "html": "<button type=\"button\" class=\"ds-primary\">生成行程</button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid transparent;border-radius:7px;min-height:42px;padding:8px 13px;font-family:inherit;font-weight:650;font-size:.87rem;line-height:1.35;white-space:nowrap;cursor:pointer;color:var(--control-paper, #fffefa);background:var(--action, #125c49);border-color:transparent}.ds-primary:hover:not(:disabled){background:var(--action-hover, #0c4838)}.ds-primary:focus-visible{outline:2px solid var(--action, #125c49);outline-offset:3px}.ds-primary:disabled{opacity:.64;cursor:not-allowed}"
+    },
+    {
+      "name": "辅助按钮",
+      "kind": "button",
+      "refersTo": "button-subtle",
+      "description": "查看行程",
+      "html": "<button type=\"button\" class=\"ds-subtle\">查看行程</button>",
+      "css": ".ds-subtle{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid transparent;border-radius:7px;min-height:42px;padding:8px 13px;font-family:inherit;font-weight:650;font-size:.87rem;line-height:1.35;white-space:nowrap;cursor:pointer;color:var(--ink, #202e27);background:var(--surface, #fffef9);border-color:var(--rule, #d8ddd1)}.ds-subtle:hover:not(:disabled){background:var(--tint, #eaf1e8)}.ds-subtle:focus-visible{outline:2px solid var(--action, #125c49);outline-offset:3px}.ds-subtle:disabled{opacity:.64;cursor:not-allowed}"
+    },
+    {
+      "name": "文字按钮",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "面板中的次要操作。",
+      "html": "<button type=\"button\" class=\"ds-text\">杭州示例</button>",
+      "css": ".ds-text{background:transparent;border:0;color:var(--action, #125c49);padding:5px 1px;min-height:35px;font-family:inherit;font-size:.82rem;font-weight:650;line-height:1.35;cursor:pointer}.ds-text:hover{text-decoration:underline;text-underline-offset:.2em}.ds-text:focus-visible{outline:2px solid var(--action, #125c49);outline-offset:3px}"
+    },
+    {
+      "name": "文字输入",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "显示中文标签和明确的输入边界。",
+      "html": "<label class=\"ds-field\">目的地<input class=\"ds-input\" type=\"text\" placeholder=\"输入城市\"></label>",
+      "css": ".ds-field{display:grid;gap:6px;font-size:.84rem;font-weight:650}.ds-input{display:block;min-height:42px;background:var(--control-paper, #fffefa);color:var(--ink, #202e27);border:1px solid var(--input-rule, #aab7aa);border-radius:7px;padding:8px 10px;font-family:inherit;font-weight:400;font-size:.88rem}.ds-input::placeholder{color:var(--muted, #58665e);opacity:1}.ds-input:focus-visible{outline:2px solid var(--action, #125c49);outline-offset:3px}"
+    },
+    {
+      "name": "偏好条",
+      "kind": "chip",
+      "refersTo": "preference-chip",
+      "description": "轻量展示可多选的旅行偏好。",
+      "html": "<button type=\"button\" class=\"ds-chip\" aria-pressed=\"true\">自然风光</button>",
+      "css": ".ds-chip{padding:4px 9px;min-height:31px;border-radius:999px;border:1px solid var(--rule, #d8ddd1);background:var(--control-paper, #fffefa);color:var(--ink, #202e27);font-family:inherit;font-size:.79rem;cursor:pointer}.ds-chip:hover{border-color:var(--action, #125c49);background:var(--tint, #eaf1e8)}.ds-chip[aria-pressed=true]{border-color:#7ea392;background:var(--tint, #eaf1e8);color:var(--action, #125c49);font-weight:650}.ds-chip:focus-visible{outline:2px solid var(--action, #125c49);outline-offset:3px}"
+    },
+    {
+      "name": "册页面板",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "使用细边线区分标题与内容。",
+      "html": "<section class=\"ds-panel\"><h2 class=\"ds-panel-head\">行程设置</h2></section>",
+      "css": ".ds-panel{background:var(--surface, #fffef9);color:var(--ink, #202e27);border:1px solid var(--rule, #d8ddd1);border-radius:var(--radius,12px)}.ds-panel-head{margin:0;font-size:1.22rem;line-height:1.35;min-height:65px;box-sizing:border-box;padding:16px 22px;display:flex;align-items:center;border-bottom:1px solid var(--rule, #d8ddd1)}"
+    },
+    {
+      "name": "当前导航项",
+      "kind": "nav",
+      "refersTo": "navigation-item-current",
+      "description": "下划线及字重标出当前视图。",
+      "html": "<nav class=\"ds-nav\" aria-label=\"主导航\"><button type=\"button\" class=\"ds-nav-item\" aria-current=\"page\">行程规划</button><button type=\"button\" class=\"ds-nav-item\">我的行程</button></nav>",
+      "css": ".ds-nav{display:flex;gap:24px;min-height:45px}.ds-nav-item{position:relative;border:0;color:var(--muted, #58665e);background:transparent;padding:0 4px;font-family:inherit;font-size:.88rem;cursor:pointer}.ds-nav-item:hover,.ds-nav-item[aria-current]{color:var(--action, #125c49)}.ds-nav-item[aria-current]{font-weight:700}.ds-nav-item[aria-current]::after{content:'';position:absolute;height:2px;inset:auto 0 -1px;background:var(--action, #125c49)}.ds-nav-item:focus-visible{outline:2px solid var(--action, #125c49);outline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "山水册页",
+    "overview": "象牙纸色构成底面，墨绿标题和细线划分阅读区。西湖实景照片给出地域感，日程与路线则借用册页对读的秩序。\n\n信息以清晰的标题、时间、地点和操作排列。重点从文字和间距获得层次，绿色引导操作，朱色标记必去地点和当前关注的站点。",
+    "keyCharacteristics": [
+      "暖纸底与墨绿色文字",
+      "写实地方照片与清晰的行程页",
+      "细边线与浅色选中状态",
+      "时间表与路线共用站点编号"
+    ],
+    "rules": [
+      {
+        "name": "The Route Accent Rule",
+        "body": "松绿标出可操作和已选状态。印泥朱标出必去地点和当前关注的站点。",
+        "section": "colors"
+      },
+      {
+        "name": "The Aligned Numerals Rule",
+        "body": "日期、时刻、距离和金额在需要前后比较的列表里使用等宽数字。",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "保留导航和筛选项的文字标签，让状态同时通过颜色和轮廓或字重表达。",
+      "让时间、地点编号、路程和费用按阅读顺序对齐。",
+      "让路线图的编号与日程列表同步，并保留文本说明和数据来源。"
+    ],
+    "donts": [
+      "避免给常规内容面板叠加阴影并抬高视觉层级。",
+      "避免把封面字体用于表单值、时刻和金额。",
+      "避免用印泥朱渲染整片内容面板。"
+    ]
+  }
+}
